@@ -1,7 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.gussilva.threemorewords.GameActivity">
+    tools:context="com.blockhead.gussilva.threemorewords.GameActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/android_hangman_help"
+        app:showAsAction="ifRoom"
+        android:title="@string/help"/>
 </menu>

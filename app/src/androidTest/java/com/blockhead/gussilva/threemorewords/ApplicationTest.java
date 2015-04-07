@@ -1,4 +1,4 @@
-package com.example.gussilva.threemorewords;
+package com.blockhead.gussilva.threemorewords;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
