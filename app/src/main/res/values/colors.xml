@@ -6,8 +6,19 @@
     <color name="accent_color">#ff4081</color>
 
     <color name="background">#dedede</color>
+    <color name="bank_letters">#dedede</color>
+    <color name="bank_letter_bg">@color/accent_color</color>
     <color name="black">#ff000000</color>
+    <color name="black_semitransparent">#22000000</color>
     <color name="button_bg">#33000000</color>
     <color name="button_start_bg">#03A9F4</color>
+    <color name="transparent">#00000000</color>
+    <color name= "underscores">@color/black</color>
     <color name= "white">#ffffff</color>
+    <color name="incorrect_bg">#F44336</color>
+
+    <color name= "chances_good">#4CAF50</color>
+    <color name= "chances_medium">#FFC107</color>
+    <color name= "chances_bad">#F44336</color>
+
 </resources>

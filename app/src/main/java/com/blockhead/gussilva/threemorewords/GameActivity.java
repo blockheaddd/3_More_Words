@@ -33,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,20 +44,19 @@ public class GameActivity extends ActionBarActivity {
     private String[] words;
     private String mCategory, mDifficulty;
     private Random rand;
-    private String currWord;
-    private LinearLayout wordLayout;
-    private TextView[] charViews;
+    private String currWord1, currWord2, currWord3;
+    private LinearLayout wordLayout1, wordLayout2, wordLayout3;
+    private TextView[] answerViews1, answerViews2, answerViews3;
+    private TextView chancesLeftView;
     private GridView letters;
     private LetterAdapter ltrAdapt;
     private AlertDialog helpAlert;
     private ActionBar mActionBar;
 
-    //body part images
-    private ImageView[] bodyParts;
-    //number of body parts
-    private int numParts=6;
-    //current part - will increment when wrong answers are chosen
-    private int currPart;
+    //number of chances
+    private int numChances =6;
+    //current wrong - will increment when wrong answers are chosen
+    private int currWrong;
     //number of characters in current word
     private int numChars;
     //number correctly guessed
@@ -75,18 +73,18 @@ public class GameActivity extends ActionBarActivity {
         words = res.getStringArray(R.array.technologyeasy);
 
         rand = new Random();
-        currWord = "";
 
-        wordLayout = (LinearLayout)findViewById(R.id.word);
+        currWord1 = "";
+        currWord2 = "";
+        currWord3 = "";
+
+        chancesLeftView = (TextView)findViewById(R.id.chancesText);
+        wordLayout1 = (LinearLayout)findViewById(R.id.word1);
+        wordLayout2 = (LinearLayout)findViewById(R.id.word2);
+        wordLayout3 = (LinearLayout)findViewById(R.id.word3);
+
         letters = (GridView)findViewById(R.id.letters);
 
-        bodyParts = new ImageView[numParts];
-        bodyParts[0] = (ImageView)findViewById(R.id.head);
-        bodyParts[1] = (ImageView)findViewById(R.id.body);
-        bodyParts[2] = (ImageView)findViewById(R.id.arm1);
-        bodyParts[3] = (ImageView)findViewById(R.id.arm2);
-        bodyParts[4] = (ImageView)findViewById(R.id.leg1);
-        bodyParts[5] = (ImageView)findViewById(R.id.leg2);
 
         mActionBar = getActionBar();
         if(mActionBar != null)
@@ -98,38 +96,50 @@ public class GameActivity extends ActionBarActivity {
     private void playGame() {
 
         //play a new game
-        String newWord = words[rand.nextInt(words.length)];
-        while(newWord.equals(currWord)) newWord = words[rand.nextInt(words.length)];
-        currWord = newWord;
-        charViews = new TextView[currWord.length()];
-        wordLayout.removeAllViews();
-        wordLayout.removeAllViews();
+        currWord1 = getNewWord();
+        currWord2 = getNewWord();
+        currWord3 = getNewWord();
 
-        //Set TextViews text to letter of the answer
-        for (int c = 0; c < currWord.length(); c++) {
-            charViews[c] = new TextView(this);
-            charViews[c].setText(""+currWord.charAt(c));
+        answerViews1 = new TextView[currWord1.length()];
+        answerViews2 = new TextView[currWord2.length()];
+        answerViews3 = new TextView[currWord3.length()];
 
-            //Set TextView Properties
-            charViews[c].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            charViews[c].setGravity(Gravity.CENTER);
-            charViews[c].setTextColor(Color.TRANSPARENT); //So that user does not see that answer
-            charViews[c].setBackgroundResource(R.drawable.letter_bg);
-            //add to layout
-            wordLayout.addView(charViews[c]);
-        }
+        wordLayout1.removeAllViews();
+        wordLayout2.removeAllViews();
+        wordLayout3.removeAllViews();
+
+        createAnswerView(currWord1, answerViews1, wordLayout1);
+        createAnswerView(currWord2, answerViews2, wordLayout2);
+        createAnswerView(currWord3, answerViews3, wordLayout3);
+
 
         ltrAdapt=new LetterAdapter(this);
         letters.setAdapter(ltrAdapt);
 
-        currPart=0;
-        numChars=currWord.length();
+        currWrong =0;
+        numChars= currWord1.length() + currWord2.length() + currWord3.length();
         numCorr=0;
 
-        //Set body parts to invisible
-        for(int p = 0; p < numParts; p++) {
-            bodyParts[p].setVisibility(View.INVISIBLE);
+    }
+
+    public void createAnswerView(String currWord, TextView[] currAnswerView, LinearLayout currWordLayout)
+    {
+        //Set TextViews text to letter of the answer for Word 1
+        for (int c = 0; c < currWord.length(); c++) {
+            currAnswerView[c] = new TextView(this);
+            currAnswerView[c].setText(""+ currWord.charAt(c));
+
+            //Set TextView Properties
+            currAnswerView[c].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            currAnswerView[c].setGravity(Gravity.CENTER);
+            currAnswerView[c].setTextColor(Color.TRANSPARENT); //So that user does not see that answer
+            currAnswerView[c].setBackgroundResource(R.drawable.letter_bg);
+            //add to layout
+            currWordLayout.addView(currAnswerView[c]);
         }
+        chancesLeftView.setTextColor(getResources().getColor(R.color.chances_good));
+        chancesLeftView.setText(numChances + " chances left");
+
     }
 
     public void letterPressed(View view) {
@@ -141,13 +151,32 @@ public class GameActivity extends ActionBarActivity {
 
         //Check if it is a correct guess
         boolean correct = false;
-        for(int k = 0; k < currWord.length(); k++) {
-            if(currWord.charAt(k)==letterChar){
+
+        //Check Word 1
+        for(int k = 0; k < currWord1.length(); k++) {
+            if(currWord1.charAt(k)==letterChar){
                 correct = true;
                 numCorr++;
-                charViews[k].setTextColor(Color.BLACK);
+                answerViews1[k].setTextColor(Color.BLACK);
             }
         }
+        //Check Word 2
+        for(int k = 0; k < currWord2.length(); k++) {
+            if(currWord2.charAt(k)==letterChar){
+                correct = true;
+                numCorr++;
+                answerViews2[k].setTextColor(Color.BLACK);
+            }
+        }
+        //Check Word 3
+        for(int k = 0; k < currWord3.length(); k++) {
+            if(currWord3.charAt(k)==letterChar){
+                correct = true;
+                numCorr++;
+                answerViews3[k].setTextColor(Color.BLACK);
+            }
+        }
+
 
         //Check if user has won, lost, or can continue playing
         if (correct) {
@@ -158,8 +187,9 @@ public class GameActivity extends ActionBarActivity {
 
                 // Display Alert Dialog
                 AlertDialog.Builder winBuild = new AlertDialog.Builder(this);
-                winBuild.setTitle("YAY");
-                winBuild.setMessage("You win!\n\nThe answer was:\n\n"+currWord);
+                winBuild.setTitle("Success");
+                winBuild.setMessage("You win!\n\nThe answers were:\n"+ currWord1
+                        + "\n" + currWord2 + "\n" + currWord3);
                 winBuild.setPositiveButton("Play Again",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -174,18 +204,30 @@ public class GameActivity extends ActionBarActivity {
 
                 winBuild.show();
             }
-        } else if (currPart < numParts) {
-        //some guesses left
-        bodyParts[currPart].setVisibility(View.VISIBLE);
-        currPart++;
-        } else{
-            //user has lost
+        } else if (currWrong < numChances) { //User still has chances
+            currWrong++;
+            view.setBackgroundResource(R.drawable.letter_wrong);
+            if((numChances - currWrong) > 1)
+                chancesLeftView.setText((numChances - currWrong) + " chances left");
+            else if((numChances - currWrong) == 1)
+                chancesLeftView.setText("1 chance left");
+            else
+                chancesLeftView.setText("Last Chance!");
+
+            if(currWrong == 3){
+                chancesLeftView.setTextColor(getResources().getColor(R.color.chances_medium));
+            }
+            else if(currWrong == 5){
+                chancesLeftView.setTextColor(getResources().getColor(R.color.chances_bad));
+            }
+        } else{ //User has lost
             disableBtns();
 
             // Display Alert Dialog
             AlertDialog.Builder loseBuild = new AlertDialog.Builder(this);
             loseBuild.setTitle("OOPS");
-            loseBuild.setMessage("You lose!\n\nThe answer was:\n\n"+currWord);
+            loseBuild.setMessage("You lose!\n\nThe answers were:\n"
+                    + currWord1 + "\n" + currWord2 + "\n" + currWord3);
             loseBuild.setPositiveButton("Play Again",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -213,9 +255,9 @@ public class GameActivity extends ActionBarActivity {
     public void showHelp() {
         AlertDialog.Builder helpBuild = new AlertDialog.Builder(this);
 
-        helpBuild.setTitle("Help");
-        helpBuild.setMessage("Guess the word by selecting the letters.\n\n"
-                + "You only have 6 wrong selections then it's game over!");
+        helpBuild.setTitle("How To Play");
+        helpBuild.setMessage("Try to guess all three words by selecting the letters" +
+                "carefully before you run out of chances.\nGood Luck!");
         helpBuild.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -224,6 +266,13 @@ public class GameActivity extends ActionBarActivity {
         helpAlert = helpBuild.create();
 
         helpBuild.show();
+    }
+
+    private String getNewWord()
+    {
+        String newWord = words[rand.nextInt(words.length)];
+        while(newWord.equals(currWord1)) newWord = words[rand.nextInt(words.length)];
+        return newWord;
     }
 
     @Override

@@ -45,7 +45,8 @@
             android:id="@+id/textMore"
             android:textSize="30sp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/imgBigThree" />
+            android:layout_below="@+id/imgBigThree"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 </RelativeLayout>

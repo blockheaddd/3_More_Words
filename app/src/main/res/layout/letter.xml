@@ -1,5 +1,9 @@
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="35dp"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
     android:background="@drawable/letter_up"
-    android:onClick="letterPressed" />
+    android:onClick="letterPressed"
+    android:textColor="@color/bank_letters"
+    android:textSize="30sp"
+    android:textAlignment="gravity"
+    android:gravity="center|center_vertical|center_horizontal" />
