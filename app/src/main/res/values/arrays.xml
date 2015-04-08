@@ -11,5 +11,16 @@
         <item>ANDROID</item>
         <item>KEYBOARD</item>
         <item>SMARTPHONE</item>
+        <item>GOOGLE</item>
+        <item>APPLE</item>
+        <item>SAMSUNG</item>
+        <item>YOSEMITE</item>
+        <item>WINDOWS</item>
+        <item>LAPTOP</item>
+        <item>NETBOOK</item>
+        <item>HARDDRIVE</item>
+        <item>AMOLED</item>
+        <item>LOLLIPOP</item>
+        <item>GINGERBREAD</item>
     </string-array>
 </resources>

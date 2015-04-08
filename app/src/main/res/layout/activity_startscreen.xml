@@ -27,7 +27,7 @@
         android:textColor="@color/black"
         android:onClick="onPlayButtonClicked"
         android:layout_below="@+id/textMore"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
