@@ -256,8 +256,8 @@ public class GameActivity extends ActionBarActivity {
         AlertDialog.Builder helpBuild = new AlertDialog.Builder(this);
 
         helpBuild.setTitle("How To Play");
-        helpBuild.setMessage("Try to guess all three words by selecting the letters" +
-                "carefully before you run out of chances.\nGood Luck!");
+        helpBuild.setMessage("Try to guess all three words by selecting the letters " +
+                "carefully before you run out of chances.\n\nGood Luck!");
         helpBuild.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
