@@ -43,6 +43,7 @@ import java.util.Random;
 public class GameActivity extends ActionBarActivity {
 
     private String[] words;
+    private String mCategory, mDifficulty;
     private Random rand;
     private String currWord;
     private LinearLayout wordLayout;
@@ -69,7 +70,9 @@ public class GameActivity extends ActionBarActivity {
         setContentView(R.layout.activity_game);
 
         Resources res = getResources();
-        words = res.getStringArray(R.array.words);
+
+        //Get array of words to draw from
+        words = res.getStringArray(R.array.technologyeasy);
 
         rand = new Random();
         currWord = "";
